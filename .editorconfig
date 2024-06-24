@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# RCS1168: Parameter name differs from base name
+dotnet_diagnostic.RCS1168.severity = none
+
+# CA1725: Parameter names should match base declaration
+dotnet_diagnostic.CA1725.severity = none
+
+# S927: Parameter names should match base declaration and other partial definitions
+dotnet_diagnostic.S927.severity = none
