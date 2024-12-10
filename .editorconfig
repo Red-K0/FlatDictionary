@@ -8,3 +8,24 @@ dotnet_diagnostic.CA1725.severity = none
 
 # S927: Parameter names should match base declaration and other partial definitions
 dotnet_diagnostic.S927.severity = none
+
+# CA1715: Identifiers should have correct prefix
+dotnet_code_quality.CA1715.exclude_single_letter_type_parameters = true
+
+# CA1043: Use Integral Or String Argument For Indexers
+dotnet_diagnostic.CA1043.severity = none
+
+# S4136: Method overloads should be grouped together
+dotnet_diagnostic.S4136.severity = none
+
+# CA1051: Do not declare visible instance fields
+dotnet_diagnostic.CA1051.severity = none
+
+# IDE0160: Convert to block scoped namespace
+csharp_style_namespace_declarations = file_scoped
+
+# IDE0055: Fix formatting
+dotnet_diagnostic.IDE0055.severity = none
+
+# RCS1036: Remove unnecessary blank line
+dotnet_diagnostic.RCS1036.severity = none
