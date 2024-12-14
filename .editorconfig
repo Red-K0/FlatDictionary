@@ -29,3 +29,15 @@ dotnet_diagnostic.IDE0055.severity = none
 
 # RCS1036: Remove unnecessary blank line
 dotnet_diagnostic.RCS1036.severity = none
+
+# IDE0011: Add braces
+csharp_prefer_braces = when_multiline
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = none
+
+# IDE0046: Convert to conditional expression
+dotnet_diagnostic.IDE0046.severity = none
+
+# RCS1069: Remove unnecessary case label
+dotnet_diagnostic.RCS1069.severity = none
