@@ -4,13 +4,6 @@ using static FlatDictionary.UnsafeHelpers;
 namespace FlatDictionary;
 public partial class FlatDictionary<TKey, TValue>
 {
-	private void Add(string key, object value)
-	{
-		_keys.Add(key, Count++);
-
-		_values.Add(ReadAs<TValue>(value));
-	}
-
 	private unsafe void WalkDictionary(IDictionary dictionary, bool checkConverter = false)
 	{
 		IEnumerator Enumerator = dictionary.Keys.GetEnumerator();
@@ -24,27 +17,47 @@ public partial class FlatDictionary<TKey, TValue>
 		Enumerator = dictionary.Values.GetEnumerator();
 		Enumerator.MoveNext();
 
-		switch (FindObjectType(ReadAs<object>(Enumerator.Current), true))
+		int EntryCount;
+
+		switch (FindObjectType(Enumerator.Current, true))
 		{
 			case TypeStatus.Value:
-				foreach (DictionaryEntry entry in dictionary) Add(_keyBuilder + _keyConverter.Invoke(ReadAs<TKey>(entry.Key)), entry.Value!);
+				EntryCount = dictionary.Count;
+
+				_keys.EnsureCapacity(_valuesCount + EntryCount);
+				_values.EnsureCapacity(_valuesCount + EntryCount);
+
+				foreach (DictionaryEntry entry in dictionary)
+				{
+					_Add(_keyBuilder + _keyConverter.Invoke(ReadAs<TKey>(entry.Key)), entry.Value!);
+				}
 				break;
 
 			case TypeStatus.Dictionary:
-				foreach (DictionaryEntry entry in ReadAs<IDictionary>(dictionary))
+				foreach (DictionaryEntry entry in dictionary)
 				{
+					IDictionary EntryDictionary = ReadAs<IDictionary>(entry.Value);
+
+					EntryCount = EntryDictionary.Count;
+
 					string keyString = _keyConverter.Invoke(ReadAs<TKey>(entry.Key));
 
 					_keyBuilder.Append(keyString);
 
-					foreach (DictionaryEntry subEntry in ReadAs<IDictionary>(entry.Value)) Add(_keyBuilder + _keyConverter.Invoke(ReadAs<TKey>(subEntry.Key)), subEntry.Value!);
+					_keys.EnsureCapacity(_valuesCount + EntryCount);
+					_values.EnsureCapacity(_valuesCount + EntryCount);
+
+					foreach (DictionaryEntry subEntry in EntryDictionary)
+					{
+						_Add(_keyBuilder + _keyConverter.Invoke(ReadAs<TKey>(subEntry.Key)), subEntry.Value!);
+					}
 
 					_keyBuilder.Length -= keyString.Length;
 				}
 				break;
 
 			case TypeStatus.NestedDictionary:
-				foreach (DictionaryEntry entry in ReadAs<IDictionary>(dictionary))
+				foreach (DictionaryEntry entry in dictionary)
 				{
 					string keyString = _keyConverter(ReadAs<TKey>(entry.Key));
 
