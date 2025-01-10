@@ -41,3 +41,9 @@ dotnet_diagnostic.IDE0046.severity = none
 
 # RCS1069: Remove unnecessary case label
 dotnet_diagnostic.RCS1069.severity = none
+
+# IDE1006: Naming Styles
+dotnet_diagnostic.IDE1006.severity = none
+
+# RCS1158: Static member in generic type should use a type parameter
+dotnet_diagnostic.RCS1158.severity = none
