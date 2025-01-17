@@ -14,15 +14,12 @@ public partial class FlatDictionary<TKey, TValue>
 
 	private void AddDictionary(IDictionary dictionary)
 	{
-		IEnumerator Enumerator = dictionary.Keys.GetEnumerator();
-		Enumerator.MoveNext();
-
-		Enumerator = dictionary.Values.GetEnumerator();
-		Enumerator.MoveNext();
+		if (dictionary.Values.Count == 0) return;
 
 		int EntryCount;
 
-		switch (GetObjectType(Enumerator.Current, true))
+		// This can literally never fail.
+		switch (GetObjectType(Unsafe.As<Dictionary<TKey, object>.ValueCollection>(dictionary.Values).First(), true))
 		{
 			case TypeStatus.Value:
 				EntryCount = dictionary.Count;
